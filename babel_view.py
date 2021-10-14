@@ -80,6 +80,7 @@ class BabelView(QMainWindow):
 
     def treeItemClicked(self, item, column_no):
         if item.childCount() == 0:
+            self.saveFiles()
             self.activeTreeItem = item
             dict_path = self.ctrl.get_dict_path(item)
 
@@ -99,4 +100,4 @@ class BabelView(QMainWindow):
             layout.itemAt(i).widget().setParent(None)
 
     def saveFiles(self):
-        self.ctrl.save_files(self.data, self.form, self.activeTreeItem)
+        self.data = self.ctrl.save_files(self.data, self.form, self.activeTreeItem)

@@ -4,6 +4,7 @@ import json
 import os
 
 from PyQt5.QtWidgets import QTreeWidgetItem, QFormLayout
+from flatten_dict import flatten, unflatten
 
 
 class BabelController:
@@ -76,8 +77,20 @@ class BabelController:
             print(label + " " + value)
 
             dict_path = self.get_dict_path(active_tree_item)
+            data[label] = self.update_dict(data[label], dict_path, value)
+        return data
 
+    def update_dict(self, d, dict_path, value):
+        tuple_path = tuple(i for i in dict_path)
+        tmp = flatten(d)
+        tmp[tuple_path] = value
+        return unflatten(tmp)
 
+    def save_to_file(self, file, data):
+        filename = file + ".json"
+        file_path = filename
+        with open(file_path, "w") as jsonFile:
+            json.dump(data, jsonFile)
 
     def merge_languages(self, data):
         for key_dict, value_dict in data.items():
